@@ -177,9 +177,68 @@ def reformat_tsv(fname_in, fname_out):
                 fw.write("\t".join([sent_word_id, current_start_end_id, word, entity_name, entity_polarity, relation,
                                     relation_polarity, relation_head]))
 
-def process_one_file(fname, title):
+def process_one_file(fname, title_list, anno_dir, corpus_dir, outdir):
+    # fname = "07683-016743-DISCHARGE_SUMMARY.pipe.txt"
+    # fname = "00098-016139-DISCHARGE_SUMMARY.pipe.txt"
+    # fname = "18531-010240-DISCHARGE_SUMMARY.pipe.txt"
+    prefix = fname.strip().split(".")[0]
 
-def process_all_file()
+    fname_anno = os.path.join(anno_dir, fname)
+    annodict_list = data_reader(fname_anno, title_list)
+
+    fname_in = os.path.join(corpus_dir, prefix+".txt")
+    text = corpus_reader(fname_in)
+
+    fname_out_tmp = os.path.join(outdir, prefix+".tmp")
+    ShAReCLEF2WebAnnoTSV(annodict_list=annodict_list, fname_in=fname_in, fname_out=fname_out_tmp)
+
+    fname_out = os.path.join(outdir, prefix+".tsv")
+    reformat_tsv(fname_out_tmp, fname_out)
+
+    # -------------- disorder entities -------------------#
+
+    # for i, item in enumerate(annodict_list):
+    #     span = item['DD Spans']
+    #     if "," not in span:
+    #         startid, endid = span.strip().split("-")
+    #         startid = int(startid)
+    #         endid = int(endid)
+    #         print(i, '\t', span, '\t', text[startid:endid])
+
+    # -------------- negation of disorder entities -------------------#
+    # for i, item in enumerate(annodict_list):
+    #     span = item['Cue NI']
+    #     if "," not in span and span != "null":
+    #         startid, endid = span.strip().split("-")
+    #         startid = int(startid)
+    #         endid = int(endid)
+    #         print(i, '\t', span, '\t', text[startid:endid])
+
+    # ------------- print out everything --------------#
+    # for i, item in enumerate(allAnno):
+    #     for k, v in item.items():
+    #         # print(i, '\t', k, '\t', v)
+    #         if "Cue " in k and v != 'null':
+    #             print(i, '\t', k, '\t', v)
+
+def process_all_file(title_list, anno_dir, corpus_dir, outdir):
+    file_count = 0
+    for fname in os.listdir(anno_dir):
+        if ".pipe" in fname:
+            file_count += 1
+            fname_anno = os.path.join(anno_dir, fname)
+            prefix = fname.strip().split(".")[0]
+            fname_in = os.path.join(corpus_dir, prefix + ".txt")
+            # current_text = corpus_reader(fname_in)
+
+            print(file_count, '\t', fname_in)
+
+            fname_out_tmp = os.path.join(outdir, prefix + ".tmp")
+            fname_out = os.path.join(outdir, prefix + ".tsv")
+            annodict_list = data_reader(fname_anno, title_list)
+            ShAReCLEF2WebAnnoTSV(annodict_list=annodict_list, fname_in=fname_in, fname_out=fname_out_tmp)
+            reformat_tsv(fname_in=fname_out_tmp, fname_out=fname_out)
+
 
 def main():
     # example data
@@ -193,9 +252,9 @@ def main():
     task2a_list = example_data_reader(ftask2a)
     task2b_list = example_data_reader(ftask2b)
 
-    title2example = dict(zip(title_list, example_list))
-    title2taskA = dict(zip(title_list, task2a_list))
-    title2taskB = dict(zip(title_list, task2b_list))
+    # title2example = dict(zip(title_list, example_list))
+    # title2taskA = dict(zip(title_list, task2a_list))
+    # title2taskB = dict(zip(title_list, task2b_list))
 
     # real data
 
@@ -205,74 +264,20 @@ def main():
     corpusdir = os.path.join(datadir, "corpus")
     knowtatordir = os.path.join(datadir, "ShAReTask2TrainingKnowtatorFiles")
 
-    # fname = "07683-016743-DISCHARGE_SUMMARY.pipe.txt"
-    # # fname = "00098-016139-DISCHARGE_SUMMARY.pipe.txt"
-    # fname = "18531-010240-DISCHARGE_SUMMARY.pipe.txt"
-    # prefix = fname.strip().split(".")[0]
-    #
-    # fname_anno = os.path.join(annodir, fname)
-    # # # for nm in os.listdir(annodir):
-    # # #     fname = os.path.join(annodir, nm)
-    # annodict_list = data_reader(fname_anno, title_list)
-    # # # print(len(allAnno))
-    #
-    # fname_in = os.path.join(corpusdir, prefix+".txt")
-    # text = corpus_reader(fname_in)
-    # # print(text)
-
     outdir = "../output_data/"
     os.makedirs(outdir, exist_ok=True)
 
-    # fname_out_tmp = os.path.join(outdir, prefix+".tmp")
-    # ShAReCLEF2WebAnnoTSV(annodict_list=annodict_list, fname_in=fname_in, fname_out=fname_out_tmp)
-    #
-    # fname_out = os.path.join(outdir, prefix+".tsv")
-    # reformat_tsv(fname_out_tmp, fname_out)
+    # process_one_file(fname="18531-010240-DISCHARGE_SUMMARY.pipe.txt",
+    #                  title_list=title_list,
+    #                  anno_dir=annodir,
+    #                  corpus_dir=corpusdir,
+    #                  outdir=outdir)
 
-    file_count = 0
-    for fname in os.listdir(annodir):
-        if ".pipe" in fname:
-            file_count += 1
-            fname_anno = os.path.join(annodir, fname)
-            prefix = fname.strip().split(".")[0]
-            fname_in = os.path.join(corpusdir, prefix+".txt")
-            current_text = corpus_reader(fname_in)
+    process_all_file(title_list=title_list,
+                     anno_dir=annodir,
+                     corpus_dir=corpusdir,
+                     outdir=outdir)
 
-            print(file_count, '\t', fname_in)
-
-            fname_out_tmp = os.path.join(outdir, prefix+".tmp")
-            fname_out = os.path.join(outdir, prefix+".tsv")
-            annodict_list = data_reader(fname_anno, title_list)
-            ShAReCLEF2WebAnnoTSV(annodict_list=annodict_list, fname_in=fname_in, fname_out=fname_out_tmp)
-            reformat_tsv(fname_in=fname_out_tmp, fname_out=fname_out)
-
-
-    #-------------- disorder entities -------------------#
-
-    # for i, item in enumerate(annodict_list):
-    #     span = item['DD Spans']
-    #     if "," not in span:
-    #         startid, endid = span.strip().split("-")
-    #         startid = int(startid)
-    #         endid = int(endid)
-    #         print(i, '\t', span, '\t', text[startid:endid])
-
-    #-------------- negation of disorder entities -------------------#
-    # for i, item in enumerate(annodict_list):
-    #     span = item['Cue NI']
-    #     if "," not in span and span != "null":
-    #         startid, endid = span.strip().split("-")
-    #         startid = int(startid)
-    #         endid = int(endid)
-    #         print(i, '\t', span, '\t', text[startid:endid])
-
-
-    #------------- print out everything --------------#
-    # for i, item in enumerate(allAnno):
-    #     for k, v in item.items():
-    #         # print(i, '\t', k, '\t', v)
-    #         if "Cue " in k and v != 'null':
-    #             print(i, '\t', k, '\t', v)
 
 
 
