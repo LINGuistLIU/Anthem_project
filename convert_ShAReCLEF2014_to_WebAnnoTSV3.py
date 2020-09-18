@@ -1,3 +1,7 @@
+"""
+This code converts the disorder and disorder negation annotation in ShAReCLEF2014 task 2 data into "WebAnno TSV v3.2 (WebAnno v3.x)" format.
+"""
+
 import os
 from nltk.tokenize import word_tokenize
 
@@ -226,12 +230,6 @@ def ShAReCLEF2WebAnnoTSV(annodict_list, fname_in, fname_out):
                         letterlist.pop(0)
                         start_idx += 1
                         delword -= 1
-
-def add_autolabled_treatments(fname_in, fauto_treatments):
-    """
-    Get spans of automatically labeled treatments. This is to be corrected.
-    """
-    pass
 
 def reformat_tsv(fname_in, fname_out):
     """
