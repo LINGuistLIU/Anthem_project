@@ -635,7 +635,8 @@ def main():
     corpusdir = os.path.join(datadir, "corpus")
     knowtatordir = os.path.join(datadir, "ShAReTask2TrainingKnowtatorFiles")
 
-    outdir = "../output_data/"
+    # outdir = "../output_data/"
+    outdir = "../ShAReCLEF_in_WebAnnoFormat/"
     os.makedirs(outdir, exist_ok=True)
 
     # process_one_file(fname="00098-016139-DISCHARGE_SUMMARY.pipe.txt",
