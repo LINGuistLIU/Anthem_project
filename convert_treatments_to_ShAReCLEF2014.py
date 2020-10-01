@@ -108,12 +108,6 @@ def main():
     out_dir = "../treatments_in_ShAReCLEF_format/"
     os.makedirs(out_dir, exist_ok=True)
 
-    # prefix = "00098-016139-DISCHARGE_SUMMARY"
-    # treatment_file = os.path.join(treatment_dir, prefix + ".txt")
-    # webanno_file = os.path.join(webanno_dir, prefix + ".tsv")
-    # new_file = os.path.join(out_dir, prefix + ".anno")
-    # process_one_file(treatment_file, webanno_file, new_file)
-
     process_all_files(treatment_dir, webanno_dir, out_dir)
 
 
