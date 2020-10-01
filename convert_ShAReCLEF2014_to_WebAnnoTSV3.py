@@ -45,7 +45,7 @@ def ShAReCLEF2WebAnnoTSV(annodict_list, fname_in, fname_out):
         negation_value = item['Cue NI']
         # print(disorder_idx_list, negation_value)
         for disorder_idx in disorder_idx_list:
-            id2disorder[disorder_idx] = "disorders"
+            id2disorder[disorder_idx] = "disorder"
             if negation_value != "null":
                 id2negation[disorder_idx] = "negative"
             else:
@@ -480,7 +480,10 @@ def add_disjoin_span_relation(fname_in, datadir="../../shareclef-ehealth-evaluat
                             # print(cur_start)
                             # print(spanstart2annolist[cur_start])
                         else:
-                            spanstart2annolist[cur_start][i] = "*"
+                            if existing_rel != "_":
+                                spanstart2annolist[cur_start][i] = "*|" + spanstart2annolist[cur_start][i]
+                            else:
+                                spanstart2annolist[cur_start][i] = "*"
                     slot_ID = spanstart2stID[prev_start]
 
                     # in the data, negation_span are always joint. There is not disjoint negation indicator.
@@ -640,14 +643,14 @@ def main():
     os.makedirs(outdir, exist_ok=True)
 
     # process_one_file(fname="00098-016139-DISCHARGE_SUMMARY.pipe.txt",
-    # process_one_file(fname="18531-010240-DISCHARGE_SUMMARY.pipe.txt",
-    # process_one_file(fname="08114-027513-DISCHARGE_SUMMARY.pipe.txt",
-    # process_one_file(fname="12125-022364-DISCHARGE_SUMMARY.pipe.txt",
-    # process_one_file(fname="00381-006281-DISCHARGE_SUMMARY.pipe.txt",
-    # process_one_file(fname="01163-001840-DISCHARGE_SUMMARY.pipe.txt",
-    # process_one_file(fname="05382-010331-DISCHARGE_SUMMARY.pipe.txt",
-    # process_one_file(fname="10907-103779-ECHO_REPORT.pipe.txt",
-    # process_one_file(fname="25775-007416-DISCHARGE_SUMMARY.pipe.txt",
+    # # process_one_file(fname="18531-010240-DISCHARGE_SUMMARY.pipe.txt",
+    # # process_one_file(fname="08114-027513-DISCHARGE_SUMMARY.pipe.txt",
+    # # process_one_file(fname="12125-022364-DISCHARGE_SUMMARY.pipe.txt",
+    # # process_one_file(fname="00381-006281-DISCHARGE_SUMMARY.pipe.txt",
+    # # process_one_file(fname="01163-001840-DISCHARGE_SUMMARY.pipe.txt",
+    # # process_one_file(fname="05382-010331-DISCHARGE_SUMMARY.pipe.txt",
+    # # process_one_file(fname="10907-103779-ECHO_REPORT.pipe.txt",
+    # # process_one_file(fname="25775-007416-DISCHARGE_SUMMARY.pipe.txt",
     #                  title_list=title_list,
     #                  anno_dir=annodir,
     #                  corpus_dir=corpusdir,
