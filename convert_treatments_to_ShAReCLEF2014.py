@@ -1,6 +1,6 @@
 """
-This code adds the automatically annotated treatments to
-the ShAReCLEF2014 task2 data in WebAnno tsv format converted with convert_ShAReCLEF2014_to_WebAnnoTSV3.py.
+This code convert the automatically annotated treatments to the ShAReCLEF2014 task2 data format.
+NOTE: it relies on the output of convert_ShAReCLEF2014_to_WebAnnoTSV3.py to get the token spans.
 """
 
 import os

@@ -1,5 +1,6 @@
 """
-This code converts the disorder and disorder negation annotation in ShAReCLEF2014 task 2 data into "WebAnno TSV v3.2 (WebAnno v3.x)" format.
+This code converts the disorder and disorder negation annotation in ShAReCLEF2014 task 2 data
+as well as the treatments annotated by the BERT model into "WebAnno TSV v3.2 (WebAnno v3.x)" format.
 """
 
 import os
